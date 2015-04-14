@@ -130,7 +130,10 @@ app.get('/photos', ensureAuthenticated, function(req, res){
     if (err) return handleError(err);
     if (user) {
       // doc may be null if no document matched
-      Instagram.users.liked_by_self({
+      
+      //MARIANO: self originally liked_by_self
+      //self() gets the user media feed
+      Instagram.users.self({
         access_token: user.access_token,
         complete: function(data) {
           //Map will iterate through the returned data obj
@@ -138,15 +141,22 @@ app.get('/photos', ensureAuthenticated, function(req, res){
             //create temporary json object
             tempJSON = {};
             tempJSON.url = item.images.low_resolution.url;
+            
+            //captions for the image
+            tempJSON.caption = item.caption.text;
             //insert json object into image array
             return tempJSON;
-          });
+            
+          }); // closes imageArr
+          
           res.render('photos', {photos: imageArr});
         }
-      }); 
-    }
-  });
-});
+      }); // closes Instagram.users.self()
+      
+      
+    } // closes if(user)
+  }); // closes query.findOne()
+}); // closes app.get()
 
 
 // GET /auth/instagram
@@ -169,8 +179,10 @@ app.get('/auth/instagram',
 app.get('/auth/instagram/callback', 
   passport.authenticate('instagram', { failureRedirect: '/login'}),
   function(req, res) {
-    res.redirect('/account');
+    res.redirect('/photos');//MARIANO:originally was '/account' instead of '/photos'
   });
+  
+  
 
 app.get('/logout', function(req, res){
   req.logout();

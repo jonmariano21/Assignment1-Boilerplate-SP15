@@ -2,7 +2,10 @@
 //dependencies for each module used
 var express = require('express');
 var passport = require('passport');
+
 var InstagramStrategy = require('passport-instagram').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+
 var http = require('http');
 var path = require('path');
 var handlebars = require('express-handlebars');
@@ -10,7 +13,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var dotenv = require('dotenv');
+
 var Instagram = require('instagram-node-lib');
+var Facebook = require('fbgraph');
+
+
 var mongoose = require('mongoose');
 var app = express();
 
@@ -23,8 +30,20 @@ var INSTAGRAM_CLIENT_ID = process.env.INSTAGRAM_CLIENT_ID;
 var INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET;
 var INSTAGRAM_CALLBACK_URL = process.env.INSTAGRAM_CALLBACK_URL;
 var INSTAGRAM_ACCESS_TOKEN = "";
+
+var FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
+var FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
+var FACEBOOK_CALLBACK_URL = process.env.FACEBOOK_CALLBACK_URL;
+var FACEBOOK_ACCESS_TOKEN = "";
+
 Instagram.set('client_id', INSTAGRAM_CLIENT_ID);
 Instagram.set('client_secret', INSTAGRAM_CLIENT_SECRET);
+
+//Facebook.set('client_id', FACEBOOK_CLIENT_ID);
+//Facebook.set('client_secret', FACEBOOK_CLIENT_SECRET);
+
+Facebook.setAccessToken(FACEBOOK_ACCESS_TOKEN);
+
 
 //connect to database
 mongoose.connect(process.env.MONGODB_CONNECTION_URL);
@@ -81,6 +100,31 @@ passport.use(new InstagramStrategy({
     });
   }
 ));
+
+
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_CLIENT_ID,
+    clientSecret: FACEBOOK_CLIENT_SECRET,
+    callbackURL: FACEBOOK_CALLBACK_URL
+  },
+  function(accessToken, refreshToken, profile, done) {
+    models.User.findOrCreate({
+    	"name": profile.username,
+    	"id": profile.id,
+    	"access_token": accessToken
+    	}, function(err, user, created) {
+    	
+    	 models.User.findOrCreate({}, function(err, user, created) {
+	      process.nextTick(function () {
+	    		
+	      if (err) { return done(err); }
+		  return done(null, profile);
+    	});
+      })
+    });
+  }
+));
+
 
 //Configures the Template engine
 app.engine('handlebars', handlebars({defaultLayout: 'layout'}));
@@ -170,6 +214,15 @@ app.get('/auth/instagram',
     // The request will be redirected to Instagram for authentication, so this
     // function will not be called.
   });
+  
+  
+// Redirect the user to Facebook for authentication.  When complete,
+// Facebook will redirect the user back to the application at
+//     /auth/facebook/callback
+app.get('/auth/facebook', passport.authenticate('facebook')); 
+
+
+
 
 // GET /auth/instagram/callback
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -182,6 +235,16 @@ app.get('/auth/instagram/callback',
     res.redirect('/photos');//MARIANO:originally was '/account' instead of '/photos'
   });
   
+  
+// Facebook will redirect the user to this URL after approval.  Finish the
+// authentication process by attempting to obtain an access token.  If
+// access was granted, the user will be logged in.  Otherwise,
+// authentication has failed.
+app.get('/auth/facebook/callback', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+	  res.redirect('/account');
+  });
   
 
 app.get('/logout', function(req, res){

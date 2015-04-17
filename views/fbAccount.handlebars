@@ -1,181 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
+<html>
 <head>
-	<title>Deagan Monahan - COGS121 - 1</title>
+	<title>A1</title>	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	
-	
-		<link rel="stylesheet" type="text/css" href="css/component.css" />
-		<script src="js/modernizr.custom.js"></script>
-	
-		<link rel="stylesheet" type="text/css" href="css/deagan.css" />
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300,300italic' rel='stylesheet' type='text/css' />
-	
-    </head>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->        
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+      <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
+</head>
 
     
-    <body>
-    
-  
-    
-    
-    
-	<div class="container">
-	
-	  <!-- Top bar -->
-	  <div class="codrops-top">
-		
-		<span class="left">
-			<a>Deagan Monahan</a>
-		    <a><strong>Assignment 1</strong></a>
-		</span>
-		<span class="right">
-		<a href="/logout"><strong>Logout</strong></a>
-		<a>{{user.displayName}}</a>
-		<img  src="fb_icon.png" height="25px">
-		</span>
-		<div class="clr">
-		</div>  </div>
-	    
-	    <!--/ Top bar -->
-    
-    
-    
-    <!--
-    
-			<header>
-				<h1><span>Assignment 1</span> OAuth</h1>
-				
-				
-			</header>
-    
-    -->
-    
-    
-    </div>
-    
-    
-    
-    <div class="crop">
-    <img src="{{coverPhoto}}"/>
-    </div>
-    
-    
-  
-    
-    
-      
-    <div class="container demo-1">
-    <br>
-    
-    
-    <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-	<span class="sr-only">Toggle navigation</span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-	<span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" ></a>
-    </div>
+<body>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-	<li class="active"><a href="#">Recent Posts <span class="sr-only">(current)</span></a></li>
-	<li><a href="/facebooklikes">Likes</a></li>
-	
-	<!--
-	<li class="dropdown">
-	  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-	  <ul class="dropdown-menu" role="menu">
-	    <li><a href="#">Action</a></li>
-	    <li><a href="#">Another action</a></li>
-	    <li><a href="#">Something else here</a></li>
-	    <li class="divider"></li>
-	    <li><a href="#">Separated link</a></li>
-	    <li class="divider"></li>
-	    <li><a href="#">One more separated link</a></li>
-	  </ul>
-	</li>
-	-->
-      </ul>
-      
-      <ul class="nav navbar-nav navbar-right">
-	
-	
-	<form class="navbar-form navbar-left" role="search">
-	<div class="form-group">
-	  <input type="text" class="form-control" placeholder="Search">
-	</div>
-	<button type="submit" class="btn btn-default">Submit</button>
-      </form>
-      
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-    
-      
-      
-    <ul class="grid cs-style-1">
-				{{#each posts}}
-				
-				
-				<script language="javascript" type="text/javascript"> 
 
-					
-				</script>
-				
-				
-				<li>
-				
-					<figure>
-						<!--https://graph.facebook.com/{{object_id}}/picture?type=normal" -->
-					<img src="https://graph.facebook.com/{{object_id}}/picture?type=normal&access_token={{accessToken}}">
-					
-		
-					<figcaption>
-						<h3 class ="giveMeEllipsis">{{message}}</h3>
-						<span>{{type}} by {{from.name}}</span>
+<!-- NAVBAR
+	======================================================================================================================================= -->	   	
+	    <div class="navbar-wrapper">
+			<div class="container">
+			
+				<!-- static-top makes navbar not whole width of screen
+					 fixed-top makes navbar the whole width of screen -->				 
+				<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+					<div class="container">
+						<div class="navbar-header">
+							<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								
+							</button>
+							
+							<!--BRAND-->
+							<a class="navbar-brand" href="#">A1</a><!-- a tag is used for linking-->		
+											
+						</div><!--close navbar-header-->
 						
-						<a target="_blank" href="{{link}}">Take a look</a>
-						<a target="_blank" href="{{link}}">Poster</a>
-					</figcaption>
-					</figure>
-					
-					
-				</li>
+						<div class="navbar-collapse collapse">
+							<form class="navbar-form navbar-right" role="form">														
+								<button class="btn btn-danger" type="submit"> Logout </button>
+									
+	
+								
+							</form>							
+	
+						</div><!--close navbar-collapse-->					
+						
+					</div><!--close container w/in navbar-->	
+				</nav>
+			</div><!--close container-->
+		</div><!--close navbar-wrapper-->
+
+		<br>
+		<br>
+
+
+
+      <div class="container">
+      	<h1 style="text-align:center"> {{user.displayName}}'s Facebook Posts </h1>
+      	
+      	
+        <div class="row">
+	            
+	          <div class="col-sm-12" class="images">
+	          
+	          	<div class = "jumbotron">
+	              	<center>
+	                	<img src="{{coverPhoto}}" class="img-responsive" class="img hashtag-img" width="80%">
+	                	<h3> {{user.displayName}}'s Profile Cover Photo </h3>
+	                </center>                
+				</div>
+	          </div>
+	              
+            
+         </div>
+         
+      </div>
+      <br>
+      
+      <div class="container">
+      	<div class="row">
+      	
+      		{{#each posts}}
+      		
+	      		<div class="col-sm-12">
+	      			<div class="jumbotron">
+	      				<center>
+	      				
+							<figcaption>
+							
+								<h3 class ="giveMeEllipsis">{{message}}</h3>
+								<span>{{type}} by {{from.name}}</span>
 				
-				
-				{{/each}}
-				
-			</ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    </div>
-    
-    
-
-
-
-<script src="js/toucheffects.js"></script>
-
-
+							</figcaption>	
+										
+							
+						 </center>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+	  </div>
+      
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/additional-methods.min.js"></script>
+    <script src="js/validate.js"></script>
+    <script src="js/bootstrap.js"></script>
 </body>
-
 </html>
+
+
+				

@@ -283,33 +283,40 @@ app.get('/feed', ensureAuthenticated, function(req, res){
 */
 
 app.get('/fbAccount', ensureAuthenticated, function(req, res){
-	//var params = { fields: "id" , fields: "picture" , fields: "message", fields: "likes" };//fields: "id" 
-  		var query  = models.User.where({ name: req.user.username });
+
+  		var query  = models.User.where({ 
+  			name: req.user.username 
+  		});
   		
   		query.findOne(function (err, user) {
-    		if (err) return handleError(err);
+    		if (err) 
+    			return handleError(err);
+    			
 			if (user) {
-      
-      
-      //console.log("req.user: "+user.access_token);
-      
+            
       			var coverPhoto;
-	  			var params = { fields: "cover" };	//fields: "posts"
+	  			var params = { 
+	  				fields: "cover" 	
+	  			};	
 	  	
 	  			Facebook.get("me", params,  function(err, coverResponse) {
-      //console.log(coverResponse.cover.source);
       				coverPhoto = coverResponse.cover.source;
 	  			});
       
       
-	  			var params = { fields: "feed" };	//fields: "posts"
+	  			var params = { 
+	  				fields: "feed" 
+	  			};	//fields: "posts"
 	  	
 	  			Facebook.get("me", params,  function(err, postsResponse) {
 
 		  			res.render('fbAccount', {  
 			  			coverPhoto: coverPhoto, 
+			  			
 			  			posts: postsResponse.feed.data,  
+			  			
 			  			user: req.user, 
+			  			
 			  			accessToken: user.access_token
 			  		});
       
@@ -320,6 +327,49 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
 		});//close findOne
   
 });//close app.get
+
+
+
+app.get('/fbLikes', ensureAuthenticated, function(req, res){
+	
+	
+	//var params = { fields: "id" , fields: "picture" , fields: "message", fields: "likes" };//fields: "id" 
+	var query  = models.User.where({ name: req.user.username });
+	query.findOne(function (err, user) {
+		if (err) return handleError(err);
+      
+			//console.log("req.user: "+user.access_token);
+			    
+			var coverPhoto;
+			var params = { fields: "cover" };
+		        Facebook.get("me", params,  function(err, coverResponse) {
+		        if (err) return handleError(err);
+		        //console.log(coverResponse.cover);
+		        coverPhoto = coverResponse.cover.source;
+		        });
+			    
+			      
+			var likes;
+			var params = { fields: "likes" };	//fields: "posts"
+			Facebook.get("me", params,  function(err, likesResponse) {
+			if (err) return handleError(err);
+			
+			//likes = likesResponse.likes.data;
+			likes = likesResponse.likes;
+
+			res.render('fbLikes', {
+				coverPhoto: coverPhoto, 
+				posts: likes, 
+				user: req.user,
+				accessToken: user.access_token
+				});
+			});
+			      
+			    	
+		          
+	});
+	
+});
 
 //////////////////////////////////////////////////////
 

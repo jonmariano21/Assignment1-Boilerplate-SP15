@@ -66,20 +66,30 @@
 
 
       <div class="container">
-      	<h1>A1: Jonathan Mariano & Steven Liu </h1>
+      	<h1 style="text-align:center"> Instagram Feed w/Caption </h1>
+      	
       	
         <div class="row">
-            {{#each photos}}
-              <div class="col-sm-4" class="images" style="text-align:center">
-              
-                <img src="{{url}}" class="img-responsive" class="img hashtag-img">
-                                                
-                {{caption}}
-                                
-             
-              </div>
-            {{/each}}
+            
+           
+	            {{#each photos}}
+	            
+	              <div class="col-sm-12" class="images">
+	              	<div class = "jumbotron">
+		              	<center>
+		                	<img src="{{url}}" class="img-responsive" class="img hashtag-img" width="80%">
+		                </center>
+		                                                
+		                <p style="text-align:center"> {{caption}} </p>
+	                                
+					</div>
+	              </div>
+	              
+	            {{/each}}
+
+            
          </div>
+         
       </div>
       <br>
       
@@ -90,7 +100,6 @@
     <script src="js/bootstrap.js"></script>
 </body>
 </html>
-
 
 
 

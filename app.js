@@ -42,7 +42,7 @@ Instagram.set('client_secret', INSTAGRAM_CLIENT_SECRET);
 //Facebook.set('client_id', FACEBOOK_CLIENT_ID);
 //Facebook.set('client_secret', FACEBOOK_CLIENT_SECRET);
 
-Facebook.setAccessToken(FACEBOOK_ACCESS_TOKEN);
+//Facebook.setAccessToken(FACEBOOK_ACCESS_TOKEN);
 
 
 
@@ -109,19 +109,20 @@ passport.use(new FacebookStrategy({
     callbackURL: FACEBOOK_CALLBACK_URL
   },
   function(accessToken, refreshToken, profile, done) {
-    models.User.findOrCreate({
-    	"name": profile.username,
-    	"id": profile.id,
-    	"access_token": accessToken
-    	}, function(err, user, created) {
     	
-    	 models.User.findOrCreate({}, function(err, user, created) {
-	      process.nextTick(function () {
+    	//	Facebook.setAccessToken(FACEBOOK_ACCESS_TOKEN);
+
+    		Facebook.setAccessToken(accessToken);
+
+			models.User.findOrCreate({
+				"name": profile.username,
+				"id": profile.id,
+				"access_token": accessToken
+			}, function(err, user, created) {
 	    		
-	      if (err) { return done(err); }
-		  return done(null, profile);
-    	});
-      })
+			if (err) { return done(err); }
+			return done(null, profile);
+    	
     });
   }
 ));
@@ -249,6 +250,8 @@ app.get('/photos', ensureAuthenticated, function(req, res){
 
 
 //FB SHIT //////////////////////////////////////////////////
+
+/*
 app.get('/feed', ensureAuthenticated, function(req, res){
   
   
@@ -264,12 +267,11 @@ app.get('/feed', ensureAuthenticated, function(req, res){
       
       
       var params = { fields: "feed" };	//fields: "posts"
-      Facebook.get("me", params,  function(err, postsResponse) {
+      Facebook.get("/me?fields=feed", function(err, reply) {
      
 	
-	      //console.log(postsResponse.feed.data)
 		//posts: postsResponse.posts.data
-	res.render('feed');
+		res.render('feed');
       
        });
       
@@ -278,7 +280,46 @@ app.get('/feed', ensureAuthenticated, function(req, res){
   });
   
 });
+*/
 
+app.get('/fbAccount', ensureAuthenticated, function(req, res){
+	//var params = { fields: "id" , fields: "picture" , fields: "message", fields: "likes" };//fields: "id" 
+  		var query  = models.User.where({ name: req.user.username });
+  		
+  		query.findOne(function (err, user) {
+    		if (err) return handleError(err);
+			if (user) {
+      
+      
+      //console.log("req.user: "+user.access_token);
+      
+      			var coverPhoto;
+	  			var params = { fields: "cover" };	//fields: "posts"
+	  	
+	  			Facebook.get("me", params,  function(err, coverResponse) {
+      //console.log(coverResponse.cover.source);
+      				coverPhoto = coverResponse.cover.source;
+	  			});
+      
+      
+	  			var params = { fields: "feed" };	//fields: "posts"
+	  	
+	  			Facebook.get("me", params,  function(err, postsResponse) {
+
+		  			res.render('fbAccount', {  
+			  			coverPhoto: coverPhoto, 
+			  			posts: postsResponse.feed.data,  
+			  			user: req.user, 
+			  			accessToken: user.access_token
+			  		});
+      
+			  	});
+      
+			}// end user check
+    
+		});//close findOne
+  
+});//close app.get
 
 //////////////////////////////////////////////////////
 
@@ -299,7 +340,7 @@ app.get('/auth/instagram',
 // Redirect the user to Facebook for authentication.  When complete,
 // Facebook will redirect the user back to the application at
 //     /auth/facebook/callback
-app.get('/auth/facebook', passport.authenticate('facebook')); 
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['read_stream', 'publish_actions', 'user_photos']})); 
 
 
 
@@ -323,7 +364,7 @@ app.get('/auth/instagram/callback',
 app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-	  res.redirect('/feed');
+	  res.redirect('/fbAccount');
   });
   
 
@@ -331,7 +372,6 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
-
 
 
 http.createServer(app).listen(app.get('port'), function() {

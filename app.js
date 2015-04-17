@@ -45,6 +45,7 @@ Instagram.set('client_secret', INSTAGRAM_CLIENT_SECRET);
 Facebook.setAccessToken(FACEBOOK_ACCESS_TOKEN);
 
 
+
 //connect to database
 mongoose.connect(process.env.MONGODB_CONNECTION_URL);
 var db = mongoose.connection;
@@ -203,6 +204,33 @@ app.get('/photos', ensureAuthenticated, function(req, res){
 }); // closes app.get()
 
 
+
+//FB SHIT
+app.get('/feed', ensureAuthenticated, function(req, res){
+  var query  = models.User.where({ name: req.user.username });
+  query.findOne(function (err, user) {
+    if (err) return handleError(err);
+    if (user) {
+      // doc may be null if no document matched
+      
+      
+      Facebook.get("/me?fields=feed", function(err, reply){
+      
+      	
+      
+      
+		res.render('feed');
+      }); // closes Instagram.users.self()
+      
+      
+    } // closes if(user)
+  }); // closes query.findOne()
+}); // closes app.get()
+
+
+
+
+
 // GET /auth/instagram
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in Instagram authentication will involve
@@ -243,7 +271,7 @@ app.get('/auth/instagram/callback',
 app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-	  res.redirect('/account');
+	  res.redirect('/feed');
   });
   
 
@@ -251,6 +279,8 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
+
+
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

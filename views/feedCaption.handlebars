@@ -1,0 +1,130 @@
+ <!DOCTYPE html>
+<html lang="en">
+ <head>
+	
+	
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<script src="js/modernizr.custom.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="css/deagan.css" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300,300italic' rel='stylesheet' type='text/css' />
+	
+    </head>
+
+    
+    
+    
+    
+    <body>
+	<div class="container">
+	
+	  <!-- Top bar -->
+	  <div class="codrops-top">
+
+		<span class="right">
+		<a href="/logout"><strong>Logout</strong></a>
+		<a>{{user.username}}</a>
+		<img  src="ig_icon.png" height="15px">
+		</span>
+		<div class="clr">
+		</div>  </div>
+	    
+	    <!--/ Top bar -->
+    
+    </div>
+    
+    
+    
+    
+    <div class="crop">
+    <img src="https://dz2kgivhhny1y.cloudfront.net/content/uploads/2014/10/Instagram-Logo-2014.jpg"/>
+    </div>
+    
+    
+    
+    
+    <div class="container demo-1">
+    <br>
+    
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	<span class="sr-only">Toggle navigation</span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+	<li class="active"><a href="#">Recent Posts <span class="sr-only">(current)</span></a></li>
+	
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+	
+	
+	<form class="navbar-form navbar-left" id="viewHashTag" role="form" method="post" action="/hashtag">
+	<div class="form-group" class="container-searchform">
+	  <input type="text" class="form-control" id="hashtag" placeholder="hashtag" name="hashtag">
+	  
+	</div>
+	
+	<button type="submit" class="btn btn-default" id="submitBtn" value="View Hashtag">Submit</button>
+      </form>
+      
+      
+      
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+    
+    
+    
+    
+    
+    
+    
+    <ul class="grid cs-style-1">
+				{{#each photos}}
+				<li>
+					<figure>
+						
+						<img src="{{url}}">
+						<figcaption>
+							<h3 class ="giveMeEllipsis">"{{caption}}"</h3>
+							<span>{{from}}</span>
+							<a target="_blank" href="{{link}}">Take a look</a>
+						</figcaption>
+					</figure>
+				</li>
+				{{/each}}
+  
+    
+			</ul>
+    
+    
+    
+    </div>
+ 
+    
+    
+    
+    
+    
+<script src="js/toucheffects.js"></script>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/additional-methods.min.js"></script>
+<script src="js/validate.js"></script>
+
+</body>
+
+</html>

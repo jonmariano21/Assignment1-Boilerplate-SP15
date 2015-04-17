@@ -169,6 +169,7 @@ app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', {user: req.user});
 });
 
+/*
 app.get('/photos', ensureAuthenticated, function(req, res){
   var query  = models.User.where({ name: req.user.username });
   query.findOne(function (err, user) {
@@ -187,8 +188,13 @@ app.get('/photos', ensureAuthenticated, function(req, res){
             tempJSON = {};
             tempJSON.url = item.images.low_resolution.url;
             
+            tempJSON.link = item.link;
+            
             //captions for the image
             tempJSON.caption = item.caption.text;
+            
+            tempJSON.likes = item.likes.count;
+            
             //insert json object into image array
             return tempJSON;
             
@@ -202,33 +208,79 @@ app.get('/photos', ensureAuthenticated, function(req, res){
     } // closes if(user)
   }); // closes query.findOne()
 }); // closes app.get()
+*/
 
 
-
-//FB SHIT
-app.get('/feed', ensureAuthenticated, function(req, res){
+app.get('/photos', ensureAuthenticated, function(req, res){
   var query  = models.User.where({ name: req.user.username });
   query.findOne(function (err, user) {
     if (err) return handleError(err);
     if (user) {
       // doc may be null if no document matched
-      
-      
-      Facebook.get("/me?fields=feed", function(err, reply){
-      
-      	
-      
-      
-		res.render('feed');
-      }); // closes Instagram.users.self()
-      
-      
-    } // closes if(user)
-  }); // closes query.findOne()
-}); // closes app.get()
+      Instagram.users.liked_by_self({
+	
+        access_token: user.access_token,
+        complete: function(data) {
+	  console.log(data);
+          //Map will iterate through the returned data obj
+	  
+          var imageArr = data.map(function(item) {
+            //create temporary json object
+            tempJSON = {};
+            tempJSON.url = item.images.low_resolution.url;
+			tempJSON.link = item.link;
+			tempJSON.caption = item.caption.text
+			tempJSON.from = item.user.username;
+			tempJSON.likes = item.likes.count;
+	    
+            //insert json object into image array
+            return tempJSON;
+          });
+          res.render('photos', {photos: imageArr, user: req.user});
+        }
+      }); 
+    }
+  });
+});
 
 
 
+
+
+
+//FB SHIT //////////////////////////////////////////////////
+app.get('/feed', ensureAuthenticated, function(req, res){
+  
+  
+  //var params = { fields: "id" , fields: "picture" , fields: "message", fields: "likes" };//fields: "id" 
+  var query  = models.User.where({ name: req.user.username });
+  query.findOne(function (err, user) {
+    if (err) return handleError(err);
+    if (user) {
+      
+      
+      //console.log("req.user: "+user.access_token);
+     
+      
+      
+      var params = { fields: "feed" };	//fields: "posts"
+      Facebook.get("me", params,  function(err, postsResponse) {
+     
+	
+	      //console.log(postsResponse.feed.data)
+		//posts: postsResponse.posts.data
+	res.render('feed');
+      
+       });
+      
+    }// end user check
+    
+  });
+  
+});
+
+
+//////////////////////////////////////////////////////
 
 
 // GET /auth/instagram

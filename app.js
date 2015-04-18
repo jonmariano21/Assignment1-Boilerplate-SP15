@@ -251,36 +251,6 @@ app.get('/photos', ensureAuthenticated, function(req, res){
 
 //FB SHIT //////////////////////////////////////////////////
 
-/*
-app.get('/feed', ensureAuthenticated, function(req, res){
-  
-  
-  //var params = { fields: "id" , fields: "picture" , fields: "message", fields: "likes" };//fields: "id" 
-  var query  = models.User.where({ name: req.user.username });
-  query.findOne(function (err, user) {
-    if (err) return handleError(err);
-    if (user) {
-      
-      
-      //console.log("req.user: "+user.access_token);
-     
-      
-      
-      var params = { fields: "feed" };	//fields: "posts"
-      Facebook.get("/me?fields=feed", function(err, reply) {
-     
-	
-		//posts: postsResponse.posts.data
-		res.render('feed');
-      
-       });
-      
-    }// end user check
-    
-  });
-  
-});
-*/
 
 app.get('/fbAccount', ensureAuthenticated, function(req, res){
 
@@ -302,7 +272,7 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
 	  			Facebook.get("me", params,  function(err, coverResponse) {
       				coverPhoto = coverResponse.cover.source;
 	  			});
-      
+	  			
       
 	  			var params = { 
 	  				fields: "feed" 
@@ -312,15 +282,16 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
 
 		  			res.render('fbAccount', {  
 			  			coverPhoto: coverPhoto, 
-			  			
+			  						  			
 			  			posts: postsResponse.feed.data,  
 			  			
 			  			user: req.user 
 			  			
-			  			//accessToken: user.access_token
 			  		});
       
 			  	});
+			  	
+			  
       
 			}// end user check
     

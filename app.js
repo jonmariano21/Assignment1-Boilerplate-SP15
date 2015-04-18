@@ -307,7 +307,7 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
 	  			var params = { 
 	  				fields: "feed" 
 	  			};	//fields: "posts"
-	  	    if(coverPhoto) console.log();
+	  			
 	  			Facebook.get("me", params,  function(err, postsResponse) {
 
 		  			res.render('fbAccount', {  
@@ -328,49 +328,6 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
   
 });//close app.get
 
-
-
-app.get('/fbLikes', ensureAuthenticated, function(req, res){
-	
-	
-	//var params = { fields: "id" , fields: "picture" , fields: "message", fields: "likes" };//fields: "id" 
-	var query  = models.User.where({ name: req.user.username });
-	query.findOne(function (err, user) {
-		if (err) return handleError(err);
-      
-			//console.log("req.user: "+user.access_token);
-			    
-			var coverPhoto;
-			var params = { fields: "cover" };
-		        Facebook.get("me", params,  function(err, coverResponse) {
-		        if (err) return handleError(err);
-		        //console.log(coverResponse.cover);
-		        coverPhoto = coverResponse.cover.source;
-		        });
-			    
-			      
-			var likes;
-			var params = { fields: "likes" };	//fields: "posts"
-			Facebook.get("me", params,  function(err, likesResponse) {
-			if (err) return handleError(err);
-			
-			//likes = likesResponse.likes.data;
-      console.log(likesResponse.likes.data);
-			likes = likesResponse.likes.data;
-
-			res.render('fbLikes', {
-				coverPhoto: coverPhoto, 
-				posts: likes, 
-				user: req.user,
-				accessToken: user.access_token
-				});
-			});
-			      
-			    	
-		          
-	});
-	
-});
 
 //////////////////////////////////////////////////////
 

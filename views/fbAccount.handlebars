@@ -17,11 +17,9 @@
       <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
 </head>
 
-
-
-
-
+    
 <body>
+
 
 <!-- NAVBAR
 	======================================================================================================================================= -->	   	
@@ -65,37 +63,52 @@
 		<br>
 
 
+
       <div class="container">
-      	<h1 style="text-align:center"> Instagram Feed w/Caption </h1>
+      	<h1 style="text-align:center"> {{user.displayName}}'s Facebook Posts </h1>
       	
       	
         <div class="row">
-            
-           
-	            {{#each photos}}
 	            
-	              <div class="col-sm-12" class="images">
-	              	<div class = "jumbotron">
-		              	<center>
-		                	<img src="{{url}}" class="img-responsive" class="img hashtag-img" width="80%">
-		                
-		                    <br>   
-		                                            
-							<p> {{caption}} </p>
-		                
-							<h2 style="color:blue"> {{likes}} likes </h2>
-						</center>
-	                                
-					</div>
-	              </div>
+	          <div class="col-sm-12" class="images">
+	          
+	          	<div class = "jumbotron">
+	              	<center>
+	                	<img src="{{coverPhoto}}" class="img-responsive" class="img hashtag-img" width="80%">
+	                	<h3> {{user.displayName}}'s Profile Cover Photo </h3>
+	                </center>                
+				</div>
+	          </div>
 	              
-	            {{/each}}
-
             
          </div>
          
       </div>
+      
       <br>
+      
+      <div class="container">
+      	<div class="row">
+      	
+      		{{#each posts}}
+      		
+	      		<div class="col-sm-12">
+	      			<div class="jumbotron">
+	      				<center>
+	      					      				
+							
+							
+							<img src="{{picture}}" class="img-responsive" class="img hashtag-img" width="80%">
+							<h2>{{message}}</h2>
+							<span style="color:blue">{{type}} by {{from.name}}</span>
+				
+										
+						 </center>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+	  </div>
       
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="js/jquery.validate.min.js"></script>
@@ -106,4 +119,4 @@
 </html>
 
 
-
+				

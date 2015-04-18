@@ -29,12 +29,12 @@ var models = require('./models');
 dotenv.load();
 var INSTAGRAM_CLIENT_ID = process.env.INSTAGRAM_CLIENT_ID;
 var INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET;
-var INSTAGRAM_CALLBACK_URL = process.env.INSTAGRAM_CALLBACK_URL;
+var INSTAGRAM_CALLBACK_URL = "http://ikl-a1.herokuapp.com/auth/instagram/callback";
 var INSTAGRAM_ACCESS_TOKEN = "";
 
 var FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
 var FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
-var FACEBOOK_CALLBACK_URL = process.env.FACEBOOK_CALLBACK_URL;
+var FACEBOOK_CALLBACK_URL = "http://ikl-a1.herokuapp.com/auth/facebook/callback";
 var FACEBOOK_ACCESS_TOKEN = "";
 
 Instagram.set('client_id', INSTAGRAM_CLIENT_ID);

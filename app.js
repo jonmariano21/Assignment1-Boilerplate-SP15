@@ -294,7 +294,7 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
     			
 			if (user) {
             
-      			var coverPhoto;
+      		var coverPhoto;
 	  			var params = { 
 	  				fields: "cover" 	
 	  			};	
@@ -307,7 +307,7 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
 	  			var params = { 
 	  				fields: "feed" 
 	  			};	//fields: "posts"
-	  	
+	  	    if(coverPhoto) console.log();
 	  			Facebook.get("me", params,  function(err, postsResponse) {
 
 		  			res.render('fbAccount', {  
@@ -315,9 +315,9 @@ app.get('/fbAccount', ensureAuthenticated, function(req, res){
 			  			
 			  			posts: postsResponse.feed.data,  
 			  			
-			  			user: req.user, 
+			  			user: req.user 
 			  			
-			  			accessToken: user.access_token
+			  			//accessToken: user.access_token
 			  		});
       
 			  	});
@@ -355,7 +355,8 @@ app.get('/fbLikes', ensureAuthenticated, function(req, res){
 			if (err) return handleError(err);
 			
 			//likes = likesResponse.likes.data;
-			likes = likesResponse.likes;
+      console.log(likesResponse.likes.data);
+			likes = likesResponse.likes.data;
 
 			res.render('fbLikes', {
 				coverPhoto: coverPhoto, 
